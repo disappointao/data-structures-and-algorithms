@@ -1,3 +1,4 @@
+//队列
 class Queue {
     constructor(props) {
         this.items = []
