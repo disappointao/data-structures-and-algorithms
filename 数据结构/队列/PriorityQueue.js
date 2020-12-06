@@ -1,15 +1,21 @@
 //优先级队列
 class PriorityQueue{
     constructor(props) {
+        //初始化优先级队列
         this.items = []
+        //初始优先级化队列长度
+        this.length = 0
     }
+    //生成优先级对垒元素
     queueElement(element,priority){
         return {
             element,
             priority
         }
     }
+    //入队
     enqueue(element,priority){
+        this.length++
         let queueElement = this.queueElement(element,priority),
             added = false
         for (let i = 0; i < this.items.length; i++) {
@@ -25,6 +31,7 @@ class PriorityQueue{
     }
     //出列
     dequeue() {
+        this.length === 0 ? this.length = 0 : this.length--
         return this.items.shift()
     }
     //查看列头
@@ -33,11 +40,11 @@ class PriorityQueue{
     }
     //判断是否为空队列
     isEmpty() {
-        return this.items.length === 0
+        return this.length === 0
     }
     //查看队列长度
     size() {
-        return this.items.length
+        return this.length
     }
     //查看整个队列
     print() {
