@@ -2,18 +2,19 @@ class DoublyNode {
     constructor(data) {
         this.data = data
         this.next = null
-        this.prev = null // 新的属性
+        this.prev = null
     }
 }
 
-class DoublyLinkList {
+class TwoWayLinkList {
     constructor() {
+        //头部结点
         this.head = null
+        //尾部节点
+        this.tail = null
         this.length = 0
-        this.tail = null // 尾部
     }
     append(data) {
-        //    创建新节点
         let newNode = new DoublyNode(data)
         // 空链表处理
         if (this.head == null) {
@@ -28,36 +29,29 @@ class DoublyLinkList {
     }
 
     insert(position, data) {
-        // 越界判断
-        if (position < 0 || position > this.length) return false
-
-        //  创建新节点
+        if (position < 0 || position > this.length)
+            return false
         let newNode = new DoublyNode(data)
-        // 在0位置插入
-        if (position == 0) {
-            //     空链表
+        if (position === 0) {
+            //空链表
             if (this.head == null) {
                 this.head = newNode
                 this.tail = newNode
-            } else { //     非空链表
+            } else {
+                //非空链表
                 newNode.next = this.head
                 this.head.prev = newNode
                 this.head = newNode
             }
-        }
-
-        //  在尾部插入   this.length  追加元素
-        else if (position == this.length) {
+        } else if (position === this.length) {
+            //链表尾部插入
             this.tail.next = newNode
             newNode.prev = this.tail
             this.tail = newNode
-        }
-
-        //  中间插入
-        else {
+        } else {
+            //链表中间插入
             let index = 0
             let current = this.head
-
             while (index++ < position) {
                 current = current.next
             }
@@ -66,51 +60,58 @@ class DoublyLinkList {
             newNode.prev = current.prev
             current.prev.next = newNode
             current.prev = newNode
-
         }
-
         this.length++
         return true
     }
 
     // 删除某个位置上的节点 removeAt
-    // 根据position的落点在前半截还是在后半截,
-    // 进行删除遍历的判断(从前开始还是从后开始)
     removeAt(position) {
         // 判断位置是否非法
-        if (position < 0 || position > this.length - 1) return false
-        if (position == 0) {
+        if (position < 0 || position > this.length - 1)
+            return false
+        //链表头部删除
+        if (position === 0) {
             // 只有一个节点
-            if (this.length == 1) {
+            if (this.length === 1) {
                 this.head = null
                 this.tail = null
             } else {
+                //当前头部的下一个结点的前置指针置空
                 this.head.next.prev = null
                 this.head = this.head.next
             }
-        } else if (position == this.length - 1) {
+        } else if (position === this.length - 1) { //链表尾部删除
             this.tail.prev.next = null
             this.tail = this.tail.prev
-        } else {
-            let index = 0
-            let current = this.head
-            while (index++ < position) {
-                current = current.next
+        } else { // 中间部分进行删除
+            // 可以根据position的落点在前半截还是在后半截，进行删除遍历的判断(从前开始还是从后开始)
+            if(position < Math.floor(this.length / 2)){
+                let index = 0;
+                let current = this.head;
+                while (index++ < position) {
+                    current = current.next;
+                }
+                current.prev.next = current.next;
+                current.next.prev = current.prev;
+            }else{
+                let index = this.length - 1;
+                let current = this.tail;
+                while (index-- > position) {
+                    current = current.prev;
+                }
+                current.prev.next = current.next;
+                current.next.prev = current.prev;
             }
-
-            current.prev.next = current.next
-            current.next.prev = current.prev
         }
         this.length--
         return true
     }
-
-    // 找到某个元素的位置 indexOf
     indexOf(data) {
         let index = 0
         let current = this.head
         while (current) {
-            if (current.data == data) {
+            if (current.data === data) {
                 return index
             }
             current = current.next
@@ -121,18 +122,52 @@ class DoublyLinkList {
     }
     // 删除某个元素节点 remove
     remove(data){
-
+        let position = this.indexOf(data);
+        return this.removeAt(position);
     }
-    // 遍历  正向遍历  current = current.next
-    forwordString() {
-        let re = ''
-        let current = this.head
+    isEmpty() {
+        return this.head == null;
+    }
+    size() {
+        return this.length;
+    }
+    //正向遍历链表
+    forwardTraversal() {
+        let re = '';
+        let current = this.head;
         while (current) {
-            re += ',' + current.data
-            current = current.next
+            re += ',' + current.data;
+            current = current.next;
         }
-        return re.slice(1)
+        return re.slice(1);
     }
-
-
+    //反向遍历链表
+    reverseTraversal() {
+        let re = '';
+        let current = this.tail;
+        while (current) {
+            re += ',' + current.data;
+            current = current.prev;
+        }
+        return re.slice(1);
+    }
 }
+module.exports = TwoWayLinkList;
+let list = new TwoWayLinkList()
+list.append(0);
+list.append(1);
+list.append(2);
+list.insert(0, -1);
+list.insert(4, 5);
+// list.removeAt(4)
+console.log(list);
+list.removeAt(1)
+console.log(list);
+// console.log(list.indexOf(0));
+// console.log(list.forwardTraversal());
+// console.log(list.reverseTraversal());
+// console.log(list.size());
+// list.clear()
+// console.log(list);
+// console.log(list.isEmpty());
+// console.log(list.size());

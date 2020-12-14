@@ -31,10 +31,11 @@ class LinkList {
         this.length++
     }
 
-    // 插入
+    // 插入结点
     insert(position, data) {
         // 判断位置是否非法
-        if (position < 0 || position > this.length) return false
+        if (position < 0 || position > this.length)
+            return false
         let newNode = new Node(data)
         if (position === 0) {
             newNode.next = this.head
@@ -53,26 +54,25 @@ class LinkList {
         this.length++
         return true
     }
-
+    //根据指定位置删除结点
     removeAt(position) {
         // 判断位置是否非法
-        if (position < 0 || position > this.length - 1) return false
+        if (position < 0 || position > this.length - 1)
+            return false
         let current = this.head
         if (position === 0) {
             this.head = current.next
         } else {
-            let index = 0
-            let previous = null
-            while (index++ < position) {
-                previous = current
-                current = current.next
+            let index = 0;
+            while(index++ < position - 1){
+                current = current.next;
             }
-            previous.next = current.next
+            current.next = current.next.next;
         }
         this.length--
         return true
     }
-
+    //根据结点值查找结点所在链表位置
     indexOf(data) {
         let index = 0
         let current = this.head
@@ -85,22 +85,20 @@ class LinkList {
         }
         return -1
     }
-
+    //根据结点值删除链表中的该结点
     remove(data) {
         let position = this.indexOf(data)
         return this.removeAt(position)
     }
-
-    // 判空
+    //判空
     isEmpty() {
         return this.head == null
     }
-
-    //  长度
+    //长度
     size() {
         return this.length
     }
-
+    //打印链表
     toString() {
         let re = ''
         let current = this.head
@@ -113,3 +111,13 @@ class LinkList {
 
 }
 module.exports = LinkList
+
+let linkList = new LinkList()
+for(let i = 0; i < 5; i++){
+    linkList.append(i);
+}
+
+linkList.insert(5,"aa");
+linkList.removeAt(1);
+console.log(linkList.toString());
+console.log(linkList.indexOf("aa"));
