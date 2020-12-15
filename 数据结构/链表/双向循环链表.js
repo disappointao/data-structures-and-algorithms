@@ -65,6 +65,8 @@ class TwoWayLoopLinkList {
             current.prev = newNode
 
         }
+        this.length++
+        return true
     }
     removeAt(position) {
         if (position < 0 || position > this.length - 1)
@@ -118,42 +120,46 @@ class TwoWayLoopLinkList {
     }
     forwardTraversal() {
         if (this.head !== null) {
-            let re = '';
+            let print = '';
             let current = this.head;
             while (current.next !== this.head) {
-                re += ',' + current.data;
+                print += ',' + current.data;
                 current = current.next;
             }
-            re += ',' + current.data;
-            return re.slice(1);
+            print += ',' + current.data;
+            return print.slice(1);
         }
         return false;
     }
     reverseTraversal() {
         if (this.head !== null) {
-            let re = '';
+            let print = '';
             let current = this.tail;
             while (current.prev !== this.tail) {
-                re += ',' + current.data;
+                print += ',' + current.data;
                 current = current.prev;
             }
-            re += ',' + current.data;
-            return re.slice(1);
+            print += ',' + current.data;
+            return print.slice(1);
         }
         return false;
     }
 }
-moudle.exports = TwoWayLoopLinkList;
+module.exports = TwoWayLoopLinkList;
 let linkList = new TwoWayLoopLinkList();
 linkList.append(1);
 linkList.append(2);
 linkList.append(3);
 linkList.append(4);
 linkList.append(5);
+console.log(linkList.forwardTraversal());
 linkList.insert(0,-1);
+console.log(linkList.forwardTraversal());
 linkList.removeAt(4);
+console.log(linkList.forwardTraversal());
 console.log(linkList.indexOf(3));
 console.log(linkList.remove(3));
+console.log(linkList.forwardTraversal());
 console.log(linkList.size());
 console.log(linkList.forwardTraversal());
 console.log(linkList.reverseTraversal());

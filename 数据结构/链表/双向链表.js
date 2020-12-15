@@ -133,23 +133,23 @@ class TwoWayLinkList {
     }
     //正向遍历链表
     forwardTraversal() {
-        let re = '';
+        let print = '';
         let current = this.head;
         while (current) {
-            re += ',' + current.data;
+            print += ',' + current.data;
             current = current.next;
         }
-        return re.slice(1);
+        return print.slice(1);
     }
     //反向遍历链表
     reverseTraversal() {
-        let re = '';
+        let print = '';
         let current = this.tail;
         while (current) {
-            re += ',' + current.data;
+            print += ',' + current.data;
             current = current.prev;
         }
-        return re.slice(1);
+        return print.slice(1);
     }
 }
 module.exports = TwoWayLinkList;

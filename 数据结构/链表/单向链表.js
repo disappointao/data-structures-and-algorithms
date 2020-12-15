@@ -21,7 +21,6 @@ class LinkList {
         // 判断当前列表是否为空
         if (this.head == null) {
             this.head = newNode
-            this.tail = newNode
         } else {
             // 寻找尾部节点(若链表不存在尾部节点属性)
             // let current = this.head
@@ -32,8 +31,8 @@ class LinkList {
             // current.next = newNode
 
             this.tail.next = newNode
-            this.tail = newNode
         }
+        this.tail = newNode
         this.length++
     }
 
@@ -51,7 +50,7 @@ class LinkList {
                 newNode.next = this.head
                 this.head = newNode
             }
-        } else if (position === this.length-1) {
+        } else if (position === this.length) {
             this.tail.next = newNode
             this.tail = newNode
         }
@@ -75,7 +74,12 @@ class LinkList {
             return false
         let current = this.head
         if (position === 0) {
-            this.head = current.next
+            if(this.length === 1){
+                this.head = null
+                this.tail = null
+            }else{
+                this.head = current.next
+            }
         } else {
             let index = 0;
             while(index++ < position - 1){
@@ -117,13 +121,13 @@ class LinkList {
     }
     //打印链表
     toString() {
-        let re = ''
+        let print = ''
         let current = this.head
         while (current != null) {
-            re += "," + current.data
+            print += "," + current.data
             current = current.next
         }
-        return re.slice(1)
+        return print.slice(1)
     }
 
 }
@@ -138,3 +142,8 @@ linkList.insert(5,"aa");
 linkList.removeAt(1);
 console.log(linkList.toString());
 console.log(linkList.indexOf("aa"));
+linkList.insert(1,4)
+linkList.insert(0,5)
+console.log(linkList.toString());
+linkList.remove(3);
+console.log(linkList.toString());

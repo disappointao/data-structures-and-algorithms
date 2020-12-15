@@ -9,6 +9,7 @@ class Node {
 class LoopLinkList {
     constructor() {
         this.head = null
+        this.tail = null
         this.length = 0
     }
     // 追加节点
@@ -28,7 +29,7 @@ class LoopLinkList {
             current.next = newNode
             newNode.next = this.head
         }
-
+        this.tail = newNode
         this.length++
         return true
     }
@@ -41,19 +42,27 @@ class LoopLinkList {
         if (position === 0) {
             if (this.head == null) {
                 this.head = newNode
+                this.tail = newNode
                 newNode.next = this.head
             } else {
-
-                let current = this.head
-                while (current.next !== this.head) {
-                    current = current.next
-                }
-
+                // let current = this.head
+                // while (current.next !== this.head) {
+                //     current = current.next
+                // }
+                //
+                // newNode.next = this.head
+                // current.next = newNode
+                // this.head = newNode
                 newNode.next = this.head
-                current.next = newNode
                 this.head = newNode
+                this.tail.next = newNode
             }
-        } else {
+        } else if (position === this.length){
+            this.tail.next = newNode
+            newNode.next = this.head
+        }
+        else {
+            //待优化
             let index = 0
             let current = this.head
             while (index++ < position - 1) {
@@ -74,12 +83,15 @@ class LoopLinkList {
         if (position === 0) {
             if (this.length === 1) {
                 this.head = null
+                this.tail = null
             } else {
-                let current = this.head
-                while (current.next !== this.head) {
-                    current = current.next
-                }
-                current.next = this.head.next
+                // let current = this.head
+                // while (current.next !== this.head) {
+                //     current = current.next
+                // }
+                // current.next = this.head.next
+                // this.head = this.head.next
+                this.tail.next = this.head.next
                 this.head = this.head.next
             }
         }else {
@@ -91,6 +103,9 @@ class LoopLinkList {
                 current = current.next
             }
             previous.next = current.next
+            if(position === this.length-1){
+                this.tail = previous
+            }
         }
         this.length--
         return true
@@ -123,30 +138,32 @@ class LoopLinkList {
     //打印链表
     toString(){
         if(this.head != null){
-            let re = '';
+            let print = '';
             let current = this.head;
             while(current.next !== this.head){
-                re += ',' + current.data;
+                print += ',' + current.data;
                 current = current.next;
             }
-            re += ',' + current.data;
-            return re.slice(1);
+            print += ',' + current.data;
+            return print.slice(1);
         }
         return null;
     }
 }
 module.exports = LoopLinkList
-let linkList = new LoopLinkList();
+let linkList = new LoopLinkList()
 
-linkList.append(0);
-linkList.append(1);
-linkList.append(2);
-linkList.append(3);
-linkList.append(4);
-linkList.remove(4);
-linkList.remove(3);
-linkList.remove(2);
-console.log(linkList.isEmpty());
-console.log(linkList);
-console.log(linkList.size());
-console.log(linkList.toString());
+linkList.append(0)
+linkList.append(1)
+linkList.append(2)
+linkList.append(3)
+linkList.append(4)
+linkList.remove(4)
+linkList.remove(3)
+linkList.remove(2)
+console.log(linkList.isEmpty())
+console.log(linkList)
+console.log(linkList.size())
+console.log(linkList.toString())
+linkList.insert(1,5)
+console.log(linkList.toString())
