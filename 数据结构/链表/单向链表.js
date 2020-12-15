@@ -8,8 +8,10 @@ class Node {
 // 链表类
 class LinkList {
     constructor() {
-        // 头部
+        //头部节点
         this.head = null
+        //尾部节点
+        this.tail= null
         // 长度
         this.length = 0
     }
@@ -19,14 +21,18 @@ class LinkList {
         // 判断当前列表是否为空
         if (this.head == null) {
             this.head = newNode
+            this.tail = newNode
         } else {
-            // 寻找尾部节点
-            let current = this.head
-            while (current.next != null) {
-                current = current.next
-            }
-            // 将尾部节点的next指向新节点
-            current.next = newNode
+            // 寻找尾部节点(若链表不存在尾部节点属性)
+            // let current = this.head
+            // while (current.next != null) {
+            //     current = current.next
+            // }
+            // // 将尾部节点的next指向新节点
+            // current.next = newNode
+
+            this.tail.next = newNode
+            this.tail = newNode
         }
         this.length++
     }
@@ -38,9 +44,18 @@ class LinkList {
             return false
         let newNode = new Node(data)
         if (position === 0) {
-            newNode.next = this.head
-            this.head = newNode
-        } else {
+            if(this.length === 0){
+                this.head = newNode
+                this.tail = newNode
+            }else{
+                newNode.next = this.head
+                this.head = newNode
+            }
+        } else if (position === this.length-1) {
+            this.tail.next = newNode
+            this.tail = newNode
+        }
+        else {
             let index = 0
             let current = this.head
             while (index++ < position - 1) {
@@ -48,7 +63,6 @@ class LinkList {
             }
             newNode.next = current.next
             current.next = newNode
-
         }
 
         this.length++
@@ -68,6 +82,9 @@ class LinkList {
                 current = current.next;
             }
             current.next = current.next.next;
+            if(index === this.length-1){
+                this.tail = current
+            }
         }
         this.length--
         return true
