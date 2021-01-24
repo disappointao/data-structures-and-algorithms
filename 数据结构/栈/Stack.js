@@ -26,6 +26,7 @@ class Stack {
     //清空栈
     clear(){
         this.items = []
+        this.length = 0
     }
     //查看栈元素长度
     size(){
