@@ -161,7 +161,7 @@
     +   `clear()`：用于清空指定字典对象中的所有内容。
     +   `delete(key) `：用于删除字典中指定key对应的一组key-value元素，删除成功则返回`true`，否则返回`false`。
     +   `keys()`：返回字典对象中每个元素的key构成的一个可迭代对象。
-    +   `values()`：和keys方法对应，values方法返回的就是字典对象中的value集合构成的迭代器对象。。 
+    +   `values()`：和keys方法对应，values方法返回的就是字典对象中的value集合构成的迭代器对象。
     +   `forEach(callback[, thisArg])`：按顺序都执行提供的 callback 函数一次。
     +   `entries()`：返回一个新的包含 `[key, value]` 形式的数组迭代器对象。
     
