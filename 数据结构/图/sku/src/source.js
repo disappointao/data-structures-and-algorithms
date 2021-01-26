@@ -1,7 +1,7 @@
 export const options = [
   { title: "颜色", list: ["紫色", "红色"] },
   { title: "套餐", list: ["套餐一", "套餐二"] },
-  { title: "内存", list: ["64G", "128G", "256G","234G"] }
+  { title: "内存", list: ["64G", "128G", "256G"] }
 ];
 
 export const combinations = [
