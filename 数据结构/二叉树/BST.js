@@ -1,8 +1,9 @@
 class Node {
-    constructor(data) {
-        this.data = data
+    constructor(val) {
+        this.val = val
         this.left = null
         this.right = null
+        this.parentNode = null
     }
 }
 class BST {
@@ -10,118 +11,270 @@ class BST {
         this.root = null
     }
 
-    insert(data) {
-        let newNode = new Node(data)
-        // 插入根节点
-        if (this.root == null) {
-            this.root = newNode
-        } else {
-            // 插入非根节点
-            // 递归: 自己调用自己,要有结束条件,否者会死循环
-            // 传入新节点,和第一个比较的根节点
-            this.insetNode(newNode, this.root)
+    insert(val) {
+        const node = new Node(val)
+        // 判断根节点是否为空
+        if (this.root === null) {
+            this.root = node
+            return
         }
-
+        //插入非根节点
+        this.insetNode(node, this.root)
     }
-    // 传入新节点,和要比较的节点
-    insetNode(newNode, node) {
-        if (newNode.data < node.data) {
-            if (node.left == null) {
-                node.left = newNode
+
+    //插入非根节点处理函数
+    insetNode(node, root) {
+        if (node.val < root.val) {
+            if (root.left == null) {
+                root.left = node
+                node.parentNode = root
             } else {
-                this.insetNode(newNode, node.left)
+                this.insetNode(node, root.left)
             }
 
+        } else if (node.val === root.val){
+            console.log('当前二叉树中已存在插入节点，插入节点失败')
         } else {
-
-            if (node.right == null) {
-                node.right = newNode
+            if (root.right == null) {
+                root.right = node
+                node.parentNode = root
             } else {
-                this.insetNode(newNode, node.right)
+                this.insetNode(node, root.right)
+            }
+        }
+    }
+
+    //先序遍历
+    preorderTraversal(cb) {
+        if (this.root === null) {
+            console.log('当前为空树无法进行遍历')
+            return
+        }
+        this.preorderTraversalNode(this.root, cb)
+    }
+
+    //先序遍历递归逻辑剥离
+    preorderTraversalNode(node, cb) {
+        if (node == null) {
+            return
+        }
+        cb(node.val)
+        this.preorderTraversalNode(node.left, cb)
+        this.preorderTraversalNode(node.right, cb)
+    }
+
+    //中序遍历
+    inorderTraversal(cb) {
+        if (this.root === null) {
+            console.log('当前为空树无法进行遍历')
+            return
+        }
+        this.inorderTraversalNode(this.root,cb)
+    }
+
+    //中序遍历递归逻辑剥离
+    inorderTraversalNode(node, cb) {
+        if (node == null) {
+            return
+        }
+        this.inorderTraversalNode(node.left, cb)
+        cb(node.val)
+        this.inorderTraversalNode(node.right, cb)
+    }
+
+
+    //后序遍历
+    postorderTraversal(cb) {
+        if (this.root === null) {
+            console.log('当前为空树无法进行遍历')
+            return
+        }
+        this.postorderTraversalNode(this.root,cb)
+    }
+
+    //后序遍历递归逻辑剥离
+    postorderTraversalNode(node, cb) {
+        if (node == null) {
+            return
+        }
+        this.postorderTraversalNode(node.left, cb)
+        this.postorderTraversalNode(node.right, cb)
+        cb(node.val)
+    }
+
+    //DFS深度优先非递归遍历
+    dfs(){
+        if (this.root === null) {
+            console.log('当前为空树无法进行遍历')
+            return
+        }
+        this.dfsNode(this.root)
+    }
+    dfsNode(root){
+        let stack = [];
+        stack.push(root);
+
+        while (stack.length !== 0) {
+            let node = stack.pop();
+            console.log(node.val);
+            if (node.right) {
+                stack.push(node.right);
+            }
+            if (node.left) {
+                stack.push(node.left);
             }
 
         }
     }
 
-    // 先序遍历  根  左子树  右子树
-    // 11 7 5 3 9 8 10 15 13 12 14 20 18 25
-    preOrderTraversal(callBack) {
-        this.preOrderTraversalNode(this.root, callBack)
-    }
-    // 中序遍历 左子树 根  右子树
-    // 3 5 7 8 9 10 11 12 13 14 15 18 20 25
-    preOrderTraversalNode(node, callBack) {
-        if (node == null) {
+    //广度优先非递归遍历
+    bfs(){
+        if (this.root === null) {
+            console.log('当前为空树无法进行遍历')
             return
         }
-        callBack(node.data)
-        this.preOrderTraversalNode(node.left, callBack)
-        this.preOrderTraversalNode(node.right, callBack)
+        this.bfsNode(this.root)
     }
 
-    inOrderTraversal() {
-        this.inOrderTraversalNode(this.root)
+    bfsNode(root){
+        let queue = [];
+        queue.push(root);
+        while (queue.length !== 0) {
+            let node = queue.shift();
+            console.log(node.val);
+            if (node.left) {
+                queue.push(node.left);
+            }
+            if (node.right) {
+                queue.push(node.right);
+            }
+        }
     }
-    inOrderTraversalNode(node) {
-        if (node == null) {
+
+    //获取当前树中的最小值
+    getMin(){
+        if(this.root ==null){
+            console.log('当前为空树无最小值')
             return
         }
-        this.inOrderTraversalNode(node.left)
-        console.log(node.data)
-        this.inOrderTraversalNode(node.right)
+        return this.getMinNode(this.root)
     }
 
-
-    // 后序遍历 左子树 右子树 根
-    // 3 5 8 10 9 7 12 14 13 18 25 20 15 11
-    postOrderTraversal() {
-        this.postOrderTraversalNode(this.root)
-    }
-    postOrderTraversalNode(node) {
-        if (node == null) {
-            return
+    //查找递归逻辑抽离
+    getMinNode(node){
+        if( node.left === null ){
+            return node;
+        }else{
+            return this.getMinNode(node.left);
         }
-        this.postOrderTraversalNode(node.left)
-        this.postOrderTraversalNode(node.right)
-        console.log(node.data)
     }
 
-    getMin() {
-        let current = this.root
-        while (current.left != null) {
-            current = current.left
+    // //获取当前树中的最大值
+    // getMax(){
+    //     if(this.root ==null){
+    //         console.log('当前为空树无最大值')
+    //         return
+    //     }
+    //     return this.getMaxNode(this.root)
+    // }
+    //
+    // //查找递归逻辑抽离
+    getMaxNode(node){
+        if( node.right === null ){
+            return node;
+        }else{
+            return this.getMaxNode(node.right);
         }
-        return current.data
     }
 
+    // getMin() {
+    //     if(this.root ==null){
+    //         console.log('当前为空树无最小值')
+    //         return
+    //     }
+    //     let current = this.root
+    //     while (current.left != null) {
+    //         current = current.left
+    //     }
+    //     return current.val
+    // }
+    //
+
+    //获取二叉树中的最大值
     getMax() {
+        if(this.root ==null){
+            console.log('当前为空树无最大值')
+            return
+        }
         let current = this.root
         while (current.right != null) {
             current = current.right
         }
-        return current.data
+        return current.val
     }
 
-    searchKey(data) {
+    //通过结点值查找节点
+    search(val) {
+        if(this.root == null) return null;
         let current = this.root
-        while (current != null) {
-            if (data < current.data) {
+        let flag = false
+        while (current !== null) {
+            if (val < current.val) {
                 current = current.left
-            } else if (data > current.data) {
+            } else if (val > current.val) {
                 current = current.right
             } else {
-                return true
+                flag = true
+                break
             }
         }
-        return false
+        return flag ? current : null
     }
 
-    remove(data) { // 8
+    //获取前驱
+    getPredessor(val){
+        let node = this.search(val)
+        if(!node){
+            return null
+        }
+        if(node.left !==null){
+            return this.getMaxNode(node.left)
+        }
+        let parent = node.parentNode
+        let current = node
+        while (parent !==null && current === parent.left){
+            current = parent
+            parent = current.parentNode
+        }
+        return parent?parent:null
+    }
+
+
+    //获取后继
+    getSuccessor(val) {
+        let node = this.search(val)
+        if (!node) {
+            return null
+        }
+        if (node.right !== null) {
+            return this.getMinNode(node.right)
+        }
+
+        let parent = node.parentNode
+        let current = node
+        while (parent !== null && current === parent.right) {
+            current = parent
+            parent = current.parentNode
+        }
+        return parent ? parent : null
+    }
+
+    remove(val) { // 8
         let current = this.root
         let parent = null
         let isLeft = false
-        while (current.data !== data) {
-            if (data < current.data) {
+        while (current.val !== val) {
+            if (val < current.val) {
                 parent = current
                 current = current.left
                 isLeft = true
@@ -181,49 +334,20 @@ class BST {
         }
 
     }
-
-    getSuccessor(delNode) {
-        let current = delNode.right
-        let successor = null
-        let successorParent = null
-        while (current != null) {
-            successorParent = successor
-            successor = current
-            current = current.left
-        }
-
-        if (successor !== delNode.right) {
-            successorParent.left = successor.right
-            successor.right = delNode.right
-        }
-
-
-        return successor
-    }
 }
 
 const bst = new BST()
 
-// 插入数据
-bst.insert(11)
-bst.insert(7)
-bst.insert(15)
-// bst.insert(5)
-// bst.insert(3)
-// bst.insert(9)
-// bst.insert(8)
-// bst.insert(10)
-// bst.insert(13)
-// bst.insert(12)
-// bst.insert(14)
-bst.insert(20)
-// bst.insert(18)
-// bst.insert(25)
-// bst.insert(19)
-let re = ''
-bst.preOrderTraversal((data) => {
-    re += "," + data
-})
+let arr = [41,20,65,11,29,50,91,32,72,99]
+arr.forEach(val=>bst.insert(val))
+// console.log('先序遍历----------------------------------')
+// bst.preorderTraversal(val=>console.log(val))
+// console.log('中序遍历----------------------------------')
+// bst.inorderTraversal(val=>console.log(val))
+// console.log('后序遍历----------------------------------')
+// bst.postorderTraversal(val=>console.log(val))
 
-console.log(re.slice(1));
-console.log(bst.remove(11));
+// console.log(bst.getPredessor(72));
+// console.log(bst.getSuccessor(65));
+bst.dfs()
+bst.bfs()
